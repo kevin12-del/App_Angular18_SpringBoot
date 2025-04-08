@@ -1,5 +1,6 @@
 package com.kevin.produits;
 
+import com.kevin.produits.entities.Categorie;
 import com.kevin.produits.entities.Produit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,7 +20,7 @@ public class ProduitsApplication  implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        repositoryRestConfiguration.exposeIdsFor(Produit.class);
+        repositoryRestConfiguration.exposeIdsFor(Produit.class, Categorie.class);
 
     }
 }
