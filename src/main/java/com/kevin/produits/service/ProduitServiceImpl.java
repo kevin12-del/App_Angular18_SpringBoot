@@ -2,10 +2,14 @@ package com.kevin.produits.service;
 
 import com.kevin.produits.entities.Categorie;
 import com.kevin.produits.entities.Produit;
+import com.kevin.produits.repos.ImageRepository;
 import com.kevin.produits.repos.ProduitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -13,6 +17,8 @@ public class ProduitServiceImpl implements ProduitService{
 
     @Autowired
     ProduitRepository produitRepository;
+    @Autowired
+    ImageRepository imageRepository;
 
     @Override
     public Produit saveProduit(Produit p) {
@@ -21,7 +27,13 @@ public class ProduitServiceImpl implements ProduitService{
 
     @Override
     public Produit updateProduit(Produit p) {
-        return produitRepository.save(p);
+       /* Long oldProdImageId =
+                this.getProduit(p.getIdProduit()).getImage().getIdImage();
+        Long newProdImageId = p.getImage().getIdImage();*/
+        Produit prodUpdated = produitRepository.save(p);
+        /*if (oldProdImageId != newProdImageId) //si l'image a été modifiée
+            imageRepository.deleteById(oldProdImageId);*/
+        return prodUpdated;
     }
 
     @Override
@@ -32,6 +44,13 @@ public class ProduitServiceImpl implements ProduitService{
 
     @Override
     public void deleteProduitById(Long id) {
+        Produit p = getProduit(id);
+        //suuprimer l'image avant de supprimer le produit
+        try {
+            Files.delete(Paths.get(System.getProperty("user.home")+"/images/"+p.getImagePath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         produitRepository.deleteById(id);
     }
 

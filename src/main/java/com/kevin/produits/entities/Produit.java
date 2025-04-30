@@ -3,6 +3,7 @@ package com.kevin.produits.entities;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -18,6 +19,25 @@ public class Produit {
 
     @ManyToOne
     private Categorie categorie;
+
+   // @OneToOne
+    //private Image image;
+
+    @OneToMany (mappedBy = "produit")
+    private List<Image> images;
+
+    private String imagePath;
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+
+
 
 
 
@@ -72,6 +92,13 @@ public class Produit {
         this.categorie = categorie;
     }
 
+    /*public Image getImage() {
+        return image;
+    }
+    public void setImage(Image image) {
+        this.image = image;
+    }*/
+
     @Override
     public String toString() {
         return "Produit{" +
@@ -80,5 +107,12 @@ public class Produit {
                 ", prixProduit=" + prixProduit +
                 ", dateCreation=" + dateCreation +
                 '}';
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }
